@@ -1,0 +1,40 @@
+import openai
+import json
+
+# Set your OpenAI API key
+openai.api_key = 'YOUR_OPENAI_API_KEY'
+
+def generate_json_from_resume(resume_text):
+    prompt = f"Extract the key information from the following resume and format it in JSON:\n\n{resume_text}\n\nOutput the result in the following JSON structure:\n{{\"name\": \"\", \"contact_info\": {{\"email\": \"\", \"phone\": \"\"}}, \"education\": [{{\"degree\": \"\", \"institution\": \"\", \"year\": \"\"}}], \"experience\": [{{\"job_title\": \"\", \"company\": \"\", \"duration\": \"\"}}], \"skills\": []}}"
+
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=500,
+        temperature=0.3
+    )
+
+    return response.choices[0].text.strip()
+
+def main():
+    resume_text = """
+    John Doe
+    Email: john.doe@example.com
+    Phone: (123) 456-7890
+
+    Education:
+    B.Sc. in Computer Science, XYZ University, 2020
+
+    Experience:
+    Software Engineer at ABC Corp, Jan 2021 - Present
+    Intern at DEF Inc, June 2019 - Aug 2019
+
+    Skills:
+    Python, Java, Machine Learning, Data Analysis
+    """
+
+    json_output = generate_json_from_resume(resume_text)
+    print(json_output)
+
+if __name__ == "__main__":
+    main()
